@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, NotFoundException, Param } from "@nestjs/common";
 
 @Controller('contacts')
 export class ContactsController {
@@ -15,11 +15,15 @@ export class ContactsController {
     });
   }
 
-  @Get(':id')
+  @Get('/:id')
   getOne(@Param('id') contactId: string) {
-    const { id, name, ...contact } = this.contacts.find(
+    const search = this.contacts.find(
       (contact) => contact.id === +contactId,
     );
-    return contact;
+    if (!search) {
+      throw new NotFoundException('Contact does not exist');
+    }
+    const { id, ...contact } = search;
+    return { ...contact };
   }
 }
