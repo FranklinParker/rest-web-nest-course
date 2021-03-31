@@ -24,6 +24,6 @@ export class ContactsController {
       throw new NotFoundException('Contact does not exist');
     }
     const { id, ...contact } = search;
-    return { ...contact };
+    return { ...contact, result: 'hi' };
   }
 }
