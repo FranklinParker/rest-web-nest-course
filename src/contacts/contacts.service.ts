@@ -1,12 +1,17 @@
 import { Injectable, NotFoundException, Param } from "@nestjs/common";
 
+import * as fs from 'fs';
 @Injectable()
 export class ContactsService {
-  contacts = [
-    { id: 1, name: 'Jim', email: 'j@aol.com' },
-    { id: 2, name: 'Joe', email: 'joe@aol.com' },
-    { id: 3, name: 'Mary', email: 'mary@aol.com' },
-  ];
+  contacts = [];
+  constructor() {
+    try {
+      const content = fs.readFileSync('./contacts.json', 'utf-8');
+      this.contacts = JSON.parse(content);
+    } catch (e) {
+      this.contacts = [];
+    }
+  }
   getAll() {
     const contacts = this.contacts.map((contact) => {
       return { name: contact.name, email: contact.email };
