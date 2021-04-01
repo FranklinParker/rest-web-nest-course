@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Put,
   NotFoundException,
   Param,
   Post,
@@ -48,6 +49,17 @@ export class ContactsController {
       const { id, ...contact } = contacts;
       this.contacts.push({ id: newId, ...contact });
     }
+    return [...this.contacts];
+  }
+
+  @Put('/:id')
+  update(@Param('id') contactId: string, @Body() body) {
+    const idx = this.contacts.findIndex((contact) => contact.id === +contactId);
+    if (idx === -1) {
+      throw new NotFoundException('Contact does not exist');
+    }
+    body.id = parseInt(contactId);
+    this.contacts[idx] = body;
     return [...this.contacts];
   }
 }
