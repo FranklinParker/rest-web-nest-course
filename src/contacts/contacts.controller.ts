@@ -9,6 +9,7 @@ import {
   Post, Patch, Delete
 } from "@nestjs/common";
 import { CreateContact } from './model/createContact';
+import { ContactsService } from './contacts.service';
 
 @Controller('contacts')
 export class ContactsController {
@@ -18,9 +19,11 @@ export class ContactsController {
     { id: 3, name: 'Mary', email: 'mary@aol.com' },
   ];
 
+  constructor(private readonly contactService: ContactsService) {
+  }
   @Get()
   getAll() {
-    return this.contacts.map((contact) => {
+    return this.contactService.getAll().map((contact) => {
       return { name: contact.name, email: contact.email };
     });
   }
