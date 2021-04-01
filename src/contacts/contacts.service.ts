@@ -9,6 +9,7 @@ export class ContactsService {
       const content = fs.readFileSync('./contacts.json', 'utf-8');
       this.contacts = JSON.parse(content);
     } catch (e) {
+      console.log('error', e);
       this.contacts = [];
     }
   }
