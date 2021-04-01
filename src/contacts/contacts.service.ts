@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException, Param } from "@nestjs/common";
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import * as fs from 'fs';
+const fileName = './contacts.json';
 @Injectable()
 export class ContactsService {
   contacts = [];
