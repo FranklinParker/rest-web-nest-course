@@ -1,4 +1,13 @@
-import { Controller, Get, NotFoundException, Param } from "@nestjs/common";
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+} from '@nestjs/common';
+import { CreateContact } from './model/createContact';
 
 @Controller('contacts')
 export class ContactsController {
@@ -17,13 +26,28 @@ export class ContactsController {
 
   @Get('/:id')
   getOne(@Param('id') contactId: string) {
-    const search = this.contacts.find(
-      (contact) => contact.id === +contactId,
-    );
+    const search = this.contacts.find((contact) => contact.id === +contactId);
     if (!search) {
       throw new NotFoundException('Contact does not exist');
     }
     const { id, ...contact } = search;
     return { ...contact, result: 'hi' };
+  }
+
+  @Post()
+  createContact(@Body() contacts: CreateContact | CreateContact[]) {
+    const ids = this.contacts.map((contact) => contact.id);
+    const newId = Math.max(...ids) + 1;
+    if (contacts instanceof Array) {
+      console.log('contact', contacts);
+      contacts.forEach((contact: CreateContact, idx) => {
+        contact.id = newId + idx;
+      });
+      this.contacts.push(...contacts);
+    } else {
+      const { id, ...contact } = contacts;
+      this.contacts.push({ id: newId, ...contact });
+    }
+    return [...this.contacts];
   }
 }
