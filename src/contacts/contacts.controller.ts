@@ -10,7 +10,7 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
-import { CreateContact } from './model/createContact';
+import { Contact } from './model/contact';
 import { ContactsService } from './contacts.service';
 
 @Controller('contacts')
@@ -34,31 +34,13 @@ export class ContactsController {
   }
 
   @Post()
-  createContact(@Body() contacts: CreateContact | CreateContact[]) {
-    const ids = this.contacts.map((contact) => contact.id);
-    const newId = Math.max(...ids) + 1;
-    if (contacts instanceof Array) {
-      console.log('contact', contacts);
-      contacts.forEach((contact: CreateContact, idx) => {
-        contact.id = newId + idx;
-      });
-      this.contacts.push(...contacts);
-    } else {
-      const { id, ...contact } = contacts;
-      this.contacts.push({ id: newId, ...contact });
-    }
-    return [...this.contacts];
+  createContact(@Body() contact: Contact | Contact[]) {
+    return this.contactService.create(contact);
   }
 
   @Put('/:id')
   update(@Param('id') contactId: string, @Body() body) {
-    const idx = this.contacts.findIndex((contact) => contact.id === +contactId);
-    if (idx === -1) {
-      throw new NotFoundException('Contact does not exist');
-    }
-    body.id = parseInt(contactId);
-    this.contacts[idx] = body;
-    return [...this.contacts];
+    return this.contactService.update(body, contactId);
   }
 
   @Patch('/:id')
