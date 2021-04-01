@@ -6,8 +6,10 @@ import {
   Put,
   NotFoundException,
   Param,
-  Post, Patch, Delete
-} from "@nestjs/common";
+  Post,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { CreateContact } from './model/createContact';
 import { ContactsService } from './contacts.service';
 
@@ -23,19 +25,12 @@ export class ContactsController {
   }
   @Get()
   getAll() {
-    return this.contactService.getAll().map((contact) => {
-      return { name: contact.name, email: contact.email };
-    });
+    return this.contactService.getAll();
   }
 
   @Get('/:id')
   getOne(@Param('id') contactId: string) {
-    const search = this.contacts.find((contact) => contact.id === +contactId);
-    if (!search) {
-      throw new NotFoundException('Contact does not exist');
-    }
-    const { id, ...contact } = search;
-    return { ...contact, result: 'hi' };
+    return this.contactService.getOne(contactId);
   }
 
   @Post()

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, Param } from "@nestjs/common";
 
 @Injectable()
 export class ContactsService {
@@ -8,6 +8,18 @@ export class ContactsService {
     { id: 3, name: 'Mary', email: 'mary@aol.com' },
   ];
   getAll() {
-    return [...this.contacts];
+    const contacts = this.contacts.map((contact) => {
+      return { name: contact.name, email: contact.email };
+    });
+    return [...contacts];
+  }
+
+  getOne(contactId: string) {
+    const search = this.contacts.find((contact) => contact.id === +contactId);
+    if (!search) {
+      throw new NotFoundException('Contact does not exist');
+    }
+    const { id, ...contact } = search;
+    return { ...contact, result: 'hi' };
   }
 }
