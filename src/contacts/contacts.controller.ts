@@ -6,8 +6,8 @@ import {
   Put,
   NotFoundException,
   Param,
-  Post,
-} from '@nestjs/common';
+  Post, Patch, Delete
+} from "@nestjs/common";
 import { CreateContact } from './model/createContact';
 
 @Controller('contacts')
@@ -60,6 +60,27 @@ export class ContactsController {
     }
     body.id = parseInt(contactId);
     this.contacts[idx] = body;
+    return [...this.contacts];
+  }
+
+  @Patch('/:id')
+  partialUpdate(@Param('id') contactId: string, @Body() body) {
+    const idx = this.contacts.findIndex((contact) => contact.id === +contactId);
+    if (idx === -1) {
+      throw new NotFoundException('Contact does not exist');
+    }
+    body.id = parseInt(contactId);
+    this.contacts[idx] = { ...this.contacts[idx], ...body };
+    return [...this.contacts];
+  }
+
+  @Delete('/:id')
+  delete(@Param('id') contactId) {
+    const idx = this.contacts.findIndex((contact) => contact.id == contactId);
+    if (idx === -1) {
+      throw new NotFoundException('Contact does not exist');
+    }
+    this.contacts.splice(idx, 1);
     return [...this.contacts];
   }
 }
