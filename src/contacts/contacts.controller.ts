@@ -10,13 +10,14 @@ import {
   Post,
   Put,
   Query,
-  UseFilters,
+  UseFilters, UsePipes, ValidationPipe
 } from '@nestjs/common';
 import { Contact } from './model/contact';
 import { ContactsService } from './contacts.service';
 import { AllExceptionsFilter } from '../shared/filter/all-exceptions.fiter';
 import { MandatoryFieldsPipe } from '../shared/pipe/mandatory-fields.pipe';
 import { UpperCasePipe } from '../shared/pipe/upper-case.pipe';
+import { ContactDto } from './dto/contactDto';
 
 @Controller('contacts')
 @UseFilters(new AllExceptionsFilter())
@@ -37,9 +38,8 @@ export class ContactsController {
   }
 
   @Post()
-  createContact(
-    @Body() contact: Contact | Contact[],
-  ) {
+  @UsePipes(ValidationPipe)
+  createContact(@Body() contact: ContactDto ) {
     return this.contactService.create(contact);
   }
 

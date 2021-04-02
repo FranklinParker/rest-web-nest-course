@@ -3,6 +3,7 @@ import { Contact } from './model/contact';
 import * as path from 'path';
 
 import * as fs from 'fs';
+import { ContactDto } from './dto/contactDto';
 const fileName = '../../contacts.json';
 @Injectable()
 export class ContactsService {
@@ -29,7 +30,7 @@ export class ContactsService {
     return [...contacts];
   }
 
-  create(contactRecord: Contact | Contact[]) {
+  create(contactRecord: ContactDto | ContactDto[]) {
     const newId = this.NextId;
     console.log('newId:' + newId);
     if (contactRecord instanceof Array) {
@@ -38,8 +39,7 @@ export class ContactsService {
       });
       this.contacts.push(...contactRecord);
     } else {
-      const { id, ...contact } = contactRecord;
-      this.contacts.push({ id: newId, ...contact });
+      this.contacts.push({ id: newId, ...contactRecord });
     }
     this.writeToFile();
     return [...this.contacts];
