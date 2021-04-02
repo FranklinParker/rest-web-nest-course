@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Put, UseFilters } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Put,
+  UseFilters,
+} from '@nestjs/common';
 import { Contact } from './model/contact';
 import { ContactsService } from './contacts.service';
 import { AllExceptionsFilter } from '../shared/filter/all-exceptions.fiter';
@@ -13,7 +25,7 @@ export class ContactsController {
   }
 
   @Get('/:id')
-  getOne(@Param('id') contactId: string) {
+  getOne(@Param('id', ParseIntPipe) contactId: number) {
     if (!this.contactService.exists(contactId)) {
       throw new NotFoundException('Contact does not exist');
     }
@@ -26,7 +38,7 @@ export class ContactsController {
   }
 
   @Put('/:id')
-  update(@Param('id') contactId: string, @Body() body) {
+  update(@Param('id', ParseIntPipe) contactId: number, @Body() body) {
     if (!this.contactService.exists(contactId)) {
       throw new NotFoundException('Contact does not exist');
     }
@@ -34,7 +46,7 @@ export class ContactsController {
   }
 
   @Patch('/:id')
-  partialUpdate(@Param('id') contactId: string, @Body() body) {
+  partialUpdate(@Param('id', ParseIntPipe) contactId: number, @Body() body) {
     if (!this.contactService.exists(contactId)) {
       throw new NotFoundException('Contact does not exist');
     }
@@ -42,7 +54,7 @@ export class ContactsController {
   }
 
   @Delete('/:id')
-  delete(@Param('id') contactId) {
+  delete(@Param('id', ParseIntPipe) contactId: number) {
     return this.contactService.delete(contactId);
   }
 }

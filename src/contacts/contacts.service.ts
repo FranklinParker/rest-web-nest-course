@@ -45,16 +45,16 @@ export class ContactsService {
     return [...this.contacts];
   }
 
-  delete(id) {
-    this.contacts = this.contacts.filter((cont) => cont.id != id);
+  delete(id: number) {
+    this.contacts = this.contacts.filter((cont) => cont.id !== id);
     this.writeToFile();
     return [...this.contacts];
   }
 
-  update(contact: Contact, id) {
+  update(contact: Contact, id: number) {
 
-    const idx = this.contacts.findIndex((contact) => contact.id == id);
-    contact.id = parseInt(id);
+    const idx = this.contacts.findIndex((contact) => contact.id === id);
+    contact.id = id;
     this.contacts[idx] = contact;
     this.writeToFile();
     return [...this.contacts];
@@ -67,7 +67,7 @@ export class ContactsService {
     return [...this.contacts];
   }
 
-  getOne(contactId: string) {
+  getOne(contactId: number) {
     const search = this.contacts.find((contact) => contact.id === +contactId);
     const { id, ...contact } = search;
     return { ...contact, result: 'hi' };
@@ -80,8 +80,8 @@ export class ContactsService {
     const newId = Math.max(...ids) + 1;
     return newId;
   }
-  exists(id) {
-    return this.contacts.findIndex((c) => c.id == id) !== -1;
+  exists(id: number) {
+    return this.contacts.findIndex((c) => c.id === id) !== -1;
   }
 
   private writeToFile() {
