@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, DefaultValuePipe,
   Delete,
   Get,
   NotFoundException,
@@ -8,8 +8,8 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Put,
-  UseFilters,
+  Put, Query,
+  UseFilters
 } from '@nestjs/common';
 import { Contact } from './model/contact';
 import { ContactsService } from './contacts.service';
@@ -20,7 +20,8 @@ import { AllExceptionsFilter } from '../shared/filter/all-exceptions.fiter';
 export class ContactsController {
   constructor(private readonly contactService: ContactsService) {}
   @Get()
-  getAll() {
+  getAll(@Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number) {
+    console.log('page:' + page);
     return this.contactService.getAll();
   }
 
