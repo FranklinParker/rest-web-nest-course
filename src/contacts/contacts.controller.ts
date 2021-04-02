@@ -9,11 +9,14 @@ import {
   Post,
   Patch,
   Delete,
+  UseFilters,
 } from '@nestjs/common';
 import { Contact } from './model/contact';
 import { ContactsService } from './contacts.service';
+import { HttpExceptionFilter } from '../shared/filter/http-exception.filter';
 
 @Controller('contacts')
+@UseFilters(new HttpExceptionFilter())
 export class ContactsController {
   constructor(private readonly contactService: ContactsService) {}
   @Get()
