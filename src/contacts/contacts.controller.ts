@@ -8,8 +8,9 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Put, Query,
-  UseFilters
+  Put,
+  Query,
+  UseFilters,
 } from '@nestjs/common';
 import { Contact } from './model/contact';
 import { ContactsService } from './contacts.service';
