@@ -1,16 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Contact } from './model/contact';
+import * as path from 'path';
 
 import * as fs from 'fs';
-const fileName = './contacts.json';
+const fileName = '../../contacts.json';
 @Injectable()
 export class ContactsService {
   contacts = [];
+  fullPath = path.join(__dirname, fileName);
   constructor() {
     try {
-      const content = fs.readFileSync(fileName, 'utf-8');
+      const content = fs.readFileSync(this.fullPath, 'utf-8');
       this.contacts = JSON.parse(content);
+      console.log('contacts loaded', this.contacts);
     } catch (e) {
+      console.log('err', e);
       this.contacts = [
         { id: 1, name: 'Jim', email: 'j@aol.com' },
         { id: 2, name: 'Joe', email: 'joe@aol.com' },
@@ -37,6 +41,16 @@ export class ContactsService {
       const { id, ...contact } = contactRecord;
       this.contacts.push({ id: newId, ...contact });
     }
+    this.writeToFile();
+    return [...this.contacts];
+  }
+
+  delete(id) {
+    if (!this.exists(id)) {
+      throw new NotFoundException('Contact does not exist');
+    }
+    this.contacts = this.contacts.filter((cont) => cont.id != id);
+    this.writeToFile();
     return [...this.contacts];
   }
 
@@ -47,6 +61,18 @@ export class ContactsService {
     const idx = this.contacts.findIndex((contact) => contact.id == id);
     contact.id = parseInt(id);
     this.contacts[idx] = contact;
+    this.writeToFile();
+    return [...this.contacts];
+  }
+  partialUpdate(contact, id) {
+    if (!this.exists(id)) {
+      throw new NotFoundException('Contact does not exist');
+    }
+    const idx = this.contacts.findIndex((contact) => contact.id == id);
+
+    contact.id = parseInt(id);
+    this.contacts[idx] = { ...this.contacts[idx], ...contact };
+    this.writeToFile();
     return [...this.contacts];
   }
 
@@ -68,5 +94,9 @@ export class ContactsService {
   }
   exists(id) {
     return this.contacts.findIndex((c) => c.id == id) !== -1;
+  }
+
+  private writeToFile() {
+    fs.writeFileSync(this.fullPath, JSON.stringify(this.contacts), 'utf-8');
   }
 }
