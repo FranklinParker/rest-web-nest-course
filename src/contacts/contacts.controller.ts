@@ -15,6 +15,7 @@ import {
 import { Contact } from './model/contact';
 import { ContactsService } from './contacts.service';
 import { AllExceptionsFilter } from '../shared/filter/all-exceptions.fiter';
+import { MandatoryFieldsPipe } from '../shared/pipe/mandatory-fields.pipe';
 
 @Controller('contacts')
 @UseFilters(new AllExceptionsFilter())
@@ -35,12 +36,17 @@ export class ContactsController {
   }
 
   @Post()
-  createContact(@Body() contact: Contact | Contact[]) {
+  createContact(
+    @Body() contact: Contact | Contact[],
+  ) {
     return this.contactService.create(contact);
   }
 
   @Put('/:id')
-  update(@Param('id', ParseIntPipe) contactId: number, @Body() body) {
+  update(
+    @Param('id', ParseIntPipe) contactId: number,
+    @Body(new MandatoryFieldsPipe(['name', 'email'])) body,
+  ) {
     if (!this.contactService.exists(contactId)) {
       throw new NotFoundException('Contact does not exist');
     }
