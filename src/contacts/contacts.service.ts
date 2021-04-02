@@ -46,7 +46,6 @@ export class ContactsService {
   }
 
   delete(id) {
-
     this.contacts = this.contacts.filter((cont) => cont.id != id);
     this.writeToFile();
     return [...this.contacts];
