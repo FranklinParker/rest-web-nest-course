@@ -21,8 +21,7 @@ export class ContactsController {
     { id: 3, name: 'Mary', email: 'mary@aol.com' },
   ];
 
-  constructor(private readonly contactService: ContactsService) {
-  }
+  constructor(private readonly contactService: ContactsService) {}
   @Get()
   getAll() {
     return this.contactService.getAll();
