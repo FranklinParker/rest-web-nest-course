@@ -20,7 +20,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     response.status(status).json({
       statusCode: status,
-      message: exception.message,
+      message: exception.message ? exception.message : 'Unknown Failure',
       timestamp: new Date().toISOString(),
       path: request.url,
     });
