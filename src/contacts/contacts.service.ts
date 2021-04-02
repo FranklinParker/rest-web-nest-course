@@ -46,18 +46,14 @@ export class ContactsService {
   }
 
   delete(id) {
-    if (!this.exists(id)) {
-      throw new NotFoundException('Contact does not exist');
-    }
+
     this.contacts = this.contacts.filter((cont) => cont.id != id);
     this.writeToFile();
     return [...this.contacts];
   }
 
   update(contact: Contact, id) {
-    if (!this.exists(id)) {
-      throw new NotFoundException('Contact does not exist');
-    }
+
     const idx = this.contacts.findIndex((contact) => contact.id == id);
     contact.id = parseInt(id);
     this.contacts[idx] = contact;
@@ -65,11 +61,7 @@ export class ContactsService {
     return [...this.contacts];
   }
   partialUpdate(contact, id) {
-    if (!this.exists(id)) {
-      throw new NotFoundException('Contact does not exist');
-    }
     const idx = this.contacts.findIndex((contact) => contact.id == id);
-
     contact.id = parseInt(id);
     this.contacts[idx] = { ...this.contacts[idx], ...contact };
     this.writeToFile();

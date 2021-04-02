@@ -15,7 +15,6 @@ import { ContactsService } from './contacts.service';
 
 @Controller('contacts')
 export class ContactsController {
-
   constructor(private readonly contactService: ContactsService) {}
   @Get()
   getAll() {
@@ -37,11 +36,17 @@ export class ContactsController {
 
   @Put('/:id')
   update(@Param('id') contactId: string, @Body() body) {
+    if (!this.contactService.exists(contactId)) {
+      throw new NotFoundException('Contact does not exist');
+    }
     return this.contactService.update(body, contactId);
   }
 
   @Patch('/:id')
   partialUpdate(@Param('id') contactId: string, @Body() body) {
+    if (!this.contactService.exists(contactId)) {
+      throw new NotFoundException('Contact does not exist');
+    }
     return this.contactService.partialUpdate(body, contactId);
   }
 
