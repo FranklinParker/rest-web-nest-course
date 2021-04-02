@@ -1,20 +1,7 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  Put,
-  NotFoundException,
-  Param,
-  Post,
-  Patch,
-  Delete,
-  UseFilters,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Put, UseFilters } from "@nestjs/common";
 import { Contact } from './model/contact';
 import { ContactsService } from './contacts.service';
-import { HttpExceptionFilter } from '../shared/filter/http-exception.filter';
-import { AllExceptionsFilter } from "../shared/filter/all-exceptions.fiter";
+import { AllExceptionsFilter } from '../shared/filter/all-exceptions.fiter';
 
 @Controller('contacts')
 @UseFilters(new AllExceptionsFilter())
