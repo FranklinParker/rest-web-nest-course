@@ -14,9 +14,10 @@ import {
 import { Contact } from './model/contact';
 import { ContactsService } from './contacts.service';
 import { HttpExceptionFilter } from '../shared/filter/http-exception.filter';
+import { AllExceptionsFilter } from "../shared/filter/all-exceptions.fiter";
 
 @Controller('contacts')
-@UseFilters(new HttpExceptionFilter())
+@UseFilters(new AllExceptionsFilter())
 export class ContactsController {
   constructor(private readonly contactService: ContactsService) {}
   @Get()
