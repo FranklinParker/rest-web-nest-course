@@ -78,9 +78,6 @@ export class ContactsService {
 
   getOne(contactId: string) {
     const search = this.contacts.find((contact) => contact.id === +contactId);
-    if (!search) {
-      throw new NotFoundException('Contact does not exist');
-    }
     const { id, ...contact } = search;
     return { ...contact, result: 'hi' };
   }

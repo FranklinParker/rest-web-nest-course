@@ -24,6 +24,9 @@ export class ContactsController {
 
   @Get('/:id')
   getOne(@Param('id') contactId: string) {
+    if (!this.contactService.exists(contactId)) {
+      throw new NotFoundException('Contact does not exist');
+    }
     return this.contactService.getOne(contactId);
   }
 
