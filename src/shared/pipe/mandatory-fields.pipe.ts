@@ -4,7 +4,7 @@ import { ArgumentMetadata, HttpException, Injectable, PipeTransform } from '@nes
 export class MandatoryFieldsPipe implements PipeTransform {
   constructor(private fields: string[]) {}
   transform(value: any, metadata: ArgumentMetadata) {
-    if (!value || typeof value === 'object') {
+    if (!value || typeof value !== 'object') {
       throw new HttpException('Payload must be an Object', 400);
     }
     const missingFields = [];
