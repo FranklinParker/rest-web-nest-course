@@ -4,6 +4,7 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ContactsModule } from './contacts/contacts.module';
@@ -11,7 +12,10 @@ import { LoggerMiddleware } from './shared/middleware/logger.middleware';
 import * as helmet from 'helmet';
 
 @Module({
-  imports: [ContactsModule],
+  imports: [
+    ContactsModule,
+    MongooseModule.forRoot('mongodb://localhost/nestclass'),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
