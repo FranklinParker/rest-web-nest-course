@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Contact } from './model/contact';
+import { Contact } from './interfaces/contact';
 import * as path from 'path';
 
 import * as fs from 'fs';
@@ -52,7 +52,6 @@ export class ContactsService {
   }
 
   update(contact: Contact, id: number) {
-
     const idx = this.contacts.findIndex((contact) => contact.id === id);
     contact.id = id;
     this.contacts[idx] = contact;
