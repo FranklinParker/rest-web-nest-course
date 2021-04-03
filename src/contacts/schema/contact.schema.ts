@@ -1,17 +1,26 @@
-import mongoose from 'mongoose';
+import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IsEmail, IsNotEmpty, IsPhoneNumber, Length } from 'class-validator';
 
-export const ContactSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-});
+@Schema()
+export class Contact extends Document {
+  @IsNotEmpty()
+  @Length(3, 25)
+  @Prop()
+  name: string;
+  @IsNotEmpty()
+  @IsEmail()
+  @Prop()
+  email: string;
+  @IsPhoneNumber('US')
+  @Prop()
+  phone: string;
+  @Prop()
+  city: string;
+  @Prop()
+  state: string;
+  @Prop()
+  country: string;
+}
 
-ContactSchema.virtual('test').get(function () {
-  return 'test';
-});
+export const ContactSchema = SchemaFactory.createForClass(Contact);
