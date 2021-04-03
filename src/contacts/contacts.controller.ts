@@ -1,6 +1,7 @@
 import {
   Body,
-  Controller, DefaultValuePipe,
+  Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   NotFoundException,
@@ -10,7 +11,9 @@ import {
   Post,
   Put,
   Query,
-  UseFilters, UsePipes, ValidationPipe
+  UseFilters,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Contact } from './model/contact';
 import { ContactsService } from './contacts.service';
@@ -39,7 +42,7 @@ export class ContactsController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  createContact(@Body() contact: ContactDto ) {
+  createContact(@Body() contact: ContactDto) {
     return this.contactService.create(contact);
   }
 
