@@ -15,7 +15,6 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Contact } from './interfaces/contact';
 import { ContactsService } from './contacts.service';
 import { AllExceptionsFilter } from '../shared/filter/all-exceptions.fiter';
 import { MandatoryFieldsPipe } from '../shared/pipe/mandatory-fields.pipe';

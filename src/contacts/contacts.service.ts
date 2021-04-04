@@ -1,15 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Contact } from './interfaces/contact';
 import * as path from 'path';
 
 import * as fs from 'fs';
 import { ContactDto } from './dto/contactDto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Contact } from './schema/contact.schema';
 const fileName = '../../contacts.json';
 @Injectable()
 export class ContactsService {
   contacts = [];
   fullPath = path.join(__dirname, fileName);
-  constructor() {
+  constructor(@InjectModel('Contact') private ContactModel: Model<Contact>) {
     try {
       const content = fs.readFileSync(this.fullPath, 'utf-8');
       this.contacts = JSON.parse(content);
@@ -30,19 +32,8 @@ export class ContactsService {
     return [...contacts];
   }
 
-  create(contactRecord: ContactDto | ContactDto[]) {
-    const newId = this.NextId;
-    console.log('newId:' + newId);
-    if (contactRecord instanceof Array) {
-      contactRecord.forEach((newContact: Contact, idx) => {
-        newContact.id = newId + idx;
-      });
-      this.contacts.push(...contactRecord);
-    } else {
-      this.contacts.push({ id: newId, ...contactRecord });
-    }
-    this.writeToFile();
-    return [...this.contacts];
+  create(contactRecord: ContactDto) {
+    return this.ContactModel.create(contactRecord);
   }
 
   delete(id: number) {

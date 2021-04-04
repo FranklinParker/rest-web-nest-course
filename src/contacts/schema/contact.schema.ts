@@ -10,7 +10,7 @@ export class Contact extends Document {
   name: string;
   @IsNotEmpty()
   @IsEmail()
-  @Prop()
+  @Prop({ unique: true })
   email: string;
   @IsPhoneNumber('US')
   @Prop()
