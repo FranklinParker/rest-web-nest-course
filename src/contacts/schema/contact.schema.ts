@@ -3,7 +3,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsEmail, IsNotEmpty, IsPhoneNumber, Length } from 'class-validator';
 import mongoose from 'mongoose';
 
-@Schema()
+@Schema({ toJSON:{ virtuals: true},
+toObject: { virtuals: true}})
 export class Contact extends Document {
   @IsNotEmpty()
   @Length(3, 25)
@@ -24,10 +25,13 @@ export class Contact extends Document {
   country: string;
   @Prop()
   messages: [{ type: mongoose.Schema.Types.ObjectId; ref: 'Message' }];
-  @Prop({ type: String, virtual: true, get(fn: Function): string {
-    return 'test ';
-    }})
-  cityState:string;
+  @Prop({
+   virtual: true,
+    get(fn: Function) {
+      return this.email + ' ' + this.name;
+    }
+  })
+  cityState: string;
 
 }
 
