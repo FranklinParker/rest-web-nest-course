@@ -8,6 +8,11 @@ export class Message extends Document {
   @Length(4, 25)
   @Prop()
   text: string;
+
+  @IsNotEmpty()
+  @Length(4, 25)
+  @Prop()
+  description: string;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);

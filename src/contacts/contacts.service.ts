@@ -32,13 +32,16 @@ export class ContactsService {
   async getAll() {
     const contacts = await this.ContactModel.find().populate({
       path: 'messages',
-      select: 'text',
+      select: 'text description',
     });
     return [...contacts];
   }
 
   async create(contactRecord: ContactDto) {
-    const message = await this.MessageModel.create({ text: 'test' });
+    const message = await this.MessageModel.create({
+      text: 'new message',
+      description: 'description',
+    });
     contactRecord.messages = [];
     contactRecord.messages.push(message._id);
     return this.ContactModel.create(contactRecord);
