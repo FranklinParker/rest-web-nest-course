@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, VirtualType } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsEmail, IsNotEmpty, IsPhoneNumber, Length } from 'class-validator';
 import mongoose from 'mongoose';
@@ -24,6 +24,11 @@ export class Contact extends Document {
   country: string;
   @Prop()
   messages: [{ type: mongoose.Schema.Types.ObjectId; ref: 'Message' }];
+  @Prop({ type: String, virtual: true, get(fn: Function): string {
+    return 'test ';
+    }})
+  cityState:string;
+
 }
 
 export const ContactSchema = SchemaFactory.createForClass(Contact);

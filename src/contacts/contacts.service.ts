@@ -29,10 +29,8 @@ export class ContactsService {
       ];
     }
   }
-  getAll() {
-    const contacts = this.contacts.map((contact) => {
-      return { name: contact.name, email: contact.email };
-    });
+  async getAll() {
+    const contacts = await this.ContactModel.find();
     return [...contacts];
   }
 
