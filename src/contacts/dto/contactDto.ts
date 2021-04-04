@@ -12,4 +12,5 @@ export class ContactDto {
   city: string;
   state: string;
   country: string;
+  messages?: any[];
 }

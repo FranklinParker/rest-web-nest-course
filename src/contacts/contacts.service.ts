@@ -6,12 +6,16 @@ import { ContactDto } from './dto/contactDto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Contact } from './schema/contact.schema';
+import { Message } from './schema/Message.schema';
 const fileName = '../../contacts.json';
 @Injectable()
 export class ContactsService {
   contacts = [];
   fullPath = path.join(__dirname, fileName);
-  constructor(@InjectModel('Contact') private ContactModel: Model<Contact>) {
+  constructor(
+    @InjectModel('Contact') private ContactModel: Model<Contact>,
+    @InjectModel('Message') private MessageModel: Model<Message>,
+  ) {
     try {
       const content = fs.readFileSync(this.fullPath, 'utf-8');
       this.contacts = JSON.parse(content);
@@ -32,7 +36,10 @@ export class ContactsService {
     return [...contacts];
   }
 
-  create(contactRecord: ContactDto) {
+  async create(contactRecord: ContactDto) {
+    const message = await this.MessageModel.create({ text: 'test' });
+    contactRecord.messages = [];
+    contactRecord.messages.push(message._id);
     return this.ContactModel.create(contactRecord);
   }
 

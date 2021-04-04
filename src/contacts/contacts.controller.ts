@@ -41,8 +41,8 @@ export class ContactsController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  createContact(@Body() contact: ContactDto) {
-    return this.contactService.create(contact);
+  async createContact(@Body() contact: ContactDto) {
+    return await this.contactService.create(contact);
   }
 
   @Put('/:id')
