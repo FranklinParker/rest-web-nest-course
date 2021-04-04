@@ -26,7 +26,9 @@ import { ContactDto } from './dto/contactDto';
 export class ContactsController {
   constructor(private readonly contactService: ContactsService) {}
   @Get()
-  async getAll(@Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number) {
+  async getAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+  ) {
     console.log('page:' + page);
     return await this.contactService.getAll();
   }
