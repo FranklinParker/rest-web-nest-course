@@ -30,7 +30,10 @@ export class ContactsService {
     }
   }
   async getAll() {
-    const contacts = await this.ContactModel.find();
+    const contacts = await this.ContactModel.find().populate({
+      path: 'messages',
+      select: 'text',
+    });
     return [...contacts];
   }
 
