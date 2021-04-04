@@ -18,7 +18,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-
     response.status(status).json({
       statusCode: status,
       message: exception.message ? exception.message : 'Unknown Failure',
