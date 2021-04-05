@@ -58,12 +58,12 @@ export class ContactsService {
     console.log('update');
     return this.ContactModel.findByIdAndUpdate(id, contact, { new: true });
   }
-  partialUpdate(contact, id) {
-    const idx = this.contacts.findIndex((contact) => contact.id == id);
-    contact.id = parseInt(id);
-    this.contacts[idx] = { ...this.contacts[idx], ...contact };
-    this.writeToFile();
-    return [...this.contacts];
+  async partialUpdate(contact, id) {
+    return this.ContactModel.findByIdAndUpdate(
+      id,
+      { $set: contact },
+      { new: true },
+    );
   }
 
   async getOne(id: string) {

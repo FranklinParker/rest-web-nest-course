@@ -22,6 +22,7 @@ import { AllExceptionsFilter } from '../shared/filter/all-exceptions.fiter';
 import { MandatoryFieldsPipe } from '../shared/pipe/mandatory-fields.pipe';
 import { UpperCasePipe } from '../shared/pipe/upper-case.pipe';
 import { ContactDto } from './dto/contactDto';
+import { PartialUpdateDto } from './dto/PartialUpdateDto';
 
 @Controller('contacts')
 @UseFilters(new AllExceptionsFilter())
@@ -56,19 +57,14 @@ export class ContactsController {
     @Body('name', UpperCasePipe) name: string,
   ) {
     await this.contactService.exists(id);
-
-    console.log('body', body);
-    console.log('name:' + name);
-
     return this.contactService.update(body, id);
   }
 
   @Patch('/:id')
-  partialUpdate(@Param('id', ParseIntPipe) contactId: string, @Body() body) {
-    if (!this.contactService.exists(contactId)) {
-      throw new NotFoundException('Contact does not exist');
-    }
-    return this.contactService.partialUpdate(body, contactId);
+  @UsePipes(new MandatoryFieldsPipe(['name']))
+  async partialUpdate(@Param('id') contactId: string, @Body() body: any) {
+    await this.contactService.exists(contactId);
+    return await this.contactService.partialUpdate(body, contactId);
   }
 
   @Delete('/:id')
