@@ -4,7 +4,12 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsEmail, IsNotEmpty, IsPhoneNumber, Length } from 'class-validator';
 import { Message } from './Message.schema';
 
-@Schema({ toJSON: { virtuals: true }, toObject: { virtuals: true }, validateBeforeSave: true, strict: true })
+@Schema({
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
+  validateBeforeSave: true,
+  strict: true,
+})
 export class Contact extends Document {
   @IsNotEmpty()
   @Length(3, 25)
