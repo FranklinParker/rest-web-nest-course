@@ -47,9 +47,10 @@ export class ContactsController {
   }
 
   @Put('/:id')
+  @UsePipes(ValidationPipe)
   async update(
     @Param('id') id: string,
-    @Body(new MandatoryFieldsPipe(['name', 'email'])) body,
+    @Body() body: ContactDto,
     @Body('name', UpperCasePipe) name: string,
   ) {
     await this.contactService.exists(id);

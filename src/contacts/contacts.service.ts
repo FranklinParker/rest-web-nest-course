@@ -56,7 +56,8 @@ export class ContactsService {
     return [...this.contacts];
   }
 
-  async update(contact: Contact, id: string) {
+  async update(contact: ContactDto, id: string) {
+    console.log('update');
     return this.ContactModel.findByIdAndUpdate(id, contact, { new: true });
   }
   partialUpdate(contact, id) {

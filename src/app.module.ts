@@ -14,7 +14,12 @@ import * as helmet from 'helmet';
 @Module({
   imports: [
     ContactsModule,
-    MongooseModule.forRoot('mongodb://localhost/nestclass'),
+    MongooseModule.forRoot('mongodb://localhost/nestclass', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
