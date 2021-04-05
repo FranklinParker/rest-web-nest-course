@@ -4,6 +4,8 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   NotFoundException,
   Param,
   ParseIntPipe,
@@ -13,7 +15,7 @@ import {
   Query,
   UseFilters,
   UsePipes,
-  ValidationPipe,
+  ValidationPipe
 } from '@nestjs/common';
 import { ContactsService } from './contacts.service';
 import { AllExceptionsFilter } from '../shared/filter/all-exceptions.fiter';
@@ -70,7 +72,12 @@ export class ContactsController {
   }
 
   @Delete('/:id')
-  delete(@Param('id', ParseIntPipe) contactId: string) {
-    return this.contactService.delete(contactId);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(@Param('id') contactId: string) {
+    const result = await this.contactService.delete(contactId);
+    console.log('count: ' + result.deletedCount);
+    if (result.deletedCount === 0) {
+      throw new NotFoundException('Contact does not exist');
+    }
   }
 }

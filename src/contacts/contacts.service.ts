@@ -51,9 +51,7 @@ export class ContactsService {
   }
 
   delete(id: string) {
-    this.contacts = this.contacts.filter((cont) => cont.id !== id);
-    this.writeToFile();
-    return [...this.contacts];
+    return this.ContactModel.deleteOne({ _id: id });
   }
 
   async update(contact: ContactDto, id: string) {
