@@ -29,11 +29,14 @@ export class ContactsService {
       ];
     }
   }
-  async getAll() {
-    const contacts = await this.ContactModel.find().populate({
-      path: 'messages',
-      select: 'text description',
-    });
+  async getAll(page: number, limit: number) {
+    const contacts = await this.ContactModel.find()
+      .skip(page - 1)
+      .limit(limit)
+      .populate({
+        path: 'messages',
+        select: 'text description',
+      });
     return [...contacts];
   }
 

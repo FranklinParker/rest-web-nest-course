@@ -28,9 +28,10 @@ export class ContactsController {
   @Get()
   async getAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
   ) {
     console.log('page:' + page);
-    return await this.contactService.getAll();
+    return await this.contactService.getAll(page, limit);
   }
 
   @Get('/:id')
