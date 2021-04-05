@@ -57,11 +57,7 @@ export class ContactsService {
   }
 
   update(contact: Contact, id: string) {
-    const idx = this.contacts.findIndex((contact) => contact.id === id);
-    contact.id = id;
-    this.contacts[idx] = contact;
-    this.writeToFile();
-    return [...this.contacts];
+    return this.ContactModel.findByIdAndUpdate(id, contact, { new: true });
   }
   partialUpdate(contact, id) {
     const idx = this.contacts.findIndex((contact) => contact.id == id);
