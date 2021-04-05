@@ -31,7 +31,7 @@ export class ContactsService {
   }
   async getAll(page: number, limit: number) {
     const contacts = await this.ContactModel.find()
-      .skip(page - 1)
+      .skip((page - 1) * limit)
       .limit(limit)
       .populate({
         path: 'messages',
@@ -50,13 +50,13 @@ export class ContactsService {
     return this.ContactModel.create(contactRecord);
   }
 
-  delete(id: number) {
+  delete(id: string) {
     this.contacts = this.contacts.filter((cont) => cont.id !== id);
     this.writeToFile();
     return [...this.contacts];
   }
 
-  update(contact: Contact, id: number) {
+  update(contact: Contact, id: string) {
     const idx = this.contacts.findIndex((contact) => contact.id === id);
     contact.id = id;
     this.contacts[idx] = contact;
@@ -71,10 +71,11 @@ export class ContactsService {
     return [...this.contacts];
   }
 
-  getOne(contactId: number) {
-    const search = this.contacts.find((contact) => contact.id === +contactId);
-    const { id, ...contact } = search;
-    return { ...contact, result: 'hi' };
+  async getOne(id: string) {
+    return this.ContactModel.findById(id).populate({
+      path: 'messages',
+      select: 'text description',
+    });
   }
   get NextId() {
     if (this.contacts.length === 0) {
@@ -84,8 +85,8 @@ export class ContactsService {
     const newId = Math.max(...ids) + 1;
     return newId;
   }
-  exists(id: number) {
-    return this.contacts.findIndex((c) => c.id === id) !== -1;
+  async exists(id: string) {
+    return (await this.ContactModel.findById(id)) !== undefined;
   }
 
   private writeToFile() {

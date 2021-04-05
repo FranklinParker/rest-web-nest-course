@@ -35,11 +35,11 @@ export class ContactsController {
   }
 
   @Get('/:id')
-  getOne(@Param('id', ParseIntPipe) contactId: number) {
-    if (!this.contactService.exists(contactId)) {
+  async getOne(@Param('id') id: string) {
+    if (!(await this.contactService.exists(id))) {
       throw new NotFoundException('Contact does not exist');
     }
-    return this.contactService.getOne(contactId);
+    return await this.contactService.getOne(id);
   }
 
   @Post()
@@ -50,21 +50,21 @@ export class ContactsController {
 
   @Put('/:id')
   update(
-    @Param('id', ParseIntPipe) contactId: number,
+    @Param('id') id: string,
     @Body(new MandatoryFieldsPipe(['name', 'email'])) body,
     @Body('name', UpperCasePipe) name: string,
   ) {
-    if (!this.contactService.exists(contactId)) {
+    if (!this.contactService.exists(id)) {
       throw new NotFoundException('Contact does not exist');
     }
     console.log('body', body);
     console.log('name:' + name);
 
-    return this.contactService.update(body, contactId);
+    return this.contactService.update(body, id);
   }
 
   @Patch('/:id')
-  partialUpdate(@Param('id', ParseIntPipe) contactId: number, @Body() body) {
+  partialUpdate(@Param('id', ParseIntPipe) contactId: string, @Body() body) {
     if (!this.contactService.exists(contactId)) {
       throw new NotFoundException('Contact does not exist');
     }
@@ -72,7 +72,7 @@ export class ContactsController {
   }
 
   @Delete('/:id')
-  delete(@Param('id', ParseIntPipe) contactId: number) {
+  delete(@Param('id', ParseIntPipe) contactId: string) {
     return this.contactService.delete(contactId);
   }
 }
