@@ -30,6 +30,8 @@ export class Contact extends Document {
   country: string;
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Message.name }] })
   messages: Message[];
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Message.name })
+  message: any;
 }
 
 export const ContactSchema = SchemaFactory.createForClass(Contact);

@@ -34,9 +34,10 @@ export class ContactsService {
       .skip((page - 1) * limit)
       .limit(limit)
       .populate({
-        path: 'messages',
+        path: 'message',
         select: 'text description',
-      });
+      })
+      .populate({ path: 'messages', select: 'text description' });
     return [...contacts];
   }
 
@@ -46,6 +47,7 @@ export class ContactsService {
       description: 'description',
     });
     contactRecord.messages = [];
+    contactRecord.message = message._id;
     contactRecord.messages.push(message._id);
     return this.ContactModel.create(contactRecord);
   }
