@@ -36,9 +36,7 @@ export class ContactsController {
 
   @Get('/:id')
   async getOne(@Param('id') id: string) {
-    if (!(await this.contactService.exists(id))) {
-      throw new NotFoundException('Contact does not exist');
-    }
+    await this.contactService.exists(id);
     return await this.contactService.getOne(id);
   }
 
@@ -49,14 +47,13 @@ export class ContactsController {
   }
 
   @Put('/:id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body(new MandatoryFieldsPipe(['name', 'email'])) body,
     @Body('name', UpperCasePipe) name: string,
   ) {
-    if (!this.contactService.exists(id)) {
-      throw new NotFoundException('Contact does not exist');
-    }
+    await this.contactService.exists(id);
+
     console.log('body', body);
     console.log('name:' + name);
 

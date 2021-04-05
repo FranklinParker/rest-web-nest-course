@@ -56,7 +56,7 @@ export class ContactsService {
     return [...this.contacts];
   }
 
-  update(contact: Contact, id: string) {
+  async update(contact: Contact, id: string) {
     return this.ContactModel.findByIdAndUpdate(id, contact, { new: true });
   }
   partialUpdate(contact, id) {
@@ -82,7 +82,10 @@ export class ContactsService {
     return newId;
   }
   async exists(id: string) {
-    return (await this.ContactModel.findById(id)) !== undefined;
+    const record = await this.ContactModel.findById(id);
+    if (record === null) {
+      throw new NotFoundException('Contact does not exist');
+    }
   }
 
   private writeToFile() {
