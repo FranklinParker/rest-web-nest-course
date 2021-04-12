@@ -15,14 +15,13 @@ import {
   Query,
   UseFilters,
   UsePipes,
-  ValidationPipe
+  ValidationPipe,
 } from '@nestjs/common';
 import { ContactsService } from './contacts.service';
 import { AllExceptionsFilter } from '../shared/filter/all-exceptions.fiter';
 import { MandatoryFieldsPipe } from '../shared/pipe/mandatory-fields.pipe';
 import { UpperCasePipe } from '../shared/pipe/upper-case.pipe';
 import { ContactDto } from './dto/contactDto';
-import { PartialUpdateDto } from './dto/PartialUpdateDto';
 
 @Controller('contacts')
 @UseFilters(new AllExceptionsFilter())
